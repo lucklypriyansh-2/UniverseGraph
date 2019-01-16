@@ -31,6 +31,12 @@ public class GraphService {
 	@Autowired
 	DataLoaderService dataLoaderService;
 
+	/**
+	 * api to get planet info based on node name
+	 * 
+	 * @param nodeName
+	 * @return
+	 */
 	public List<Planet> getPlanet(Optional<String> nodeName) {
 		if (nodeName.isPresent()) {
 			List<Planet> planetsList = new ArrayList<Planet>();
@@ -43,6 +49,11 @@ public class GraphService {
 		}
 	}
 
+	/**
+	 * Api to get route info based on route id
+	 * @param routeId
+	 * @return
+	 */
 	public List<Route> getRoutes(Optional<Double> routeId) {
 
 		if (routeId.isPresent()) {
@@ -63,6 +74,7 @@ public class GraphService {
 	/**
 	 * 
 	 * Service to get the shortest path
+	 * from point A to Point B
 	 * 
 	 * @param source
 	 * @param destination
@@ -80,7 +92,8 @@ public class GraphService {
 						includeTraffic);
 
 		List<Distance> distanceList = CrytekBeanUtils
-				.createDistanceList(distanceSourceMap, destination,dataLoaderService);
+				.createDistanceList(distanceSourceMap, destination,
+						dataLoaderService);
 		return distanceList;
 
 	}

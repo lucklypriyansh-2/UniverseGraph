@@ -29,7 +29,9 @@ public class DijsktraAlgoUtil {
 			Map<String, List<Route>> planetRouteMap,
 			boolean includeTraffic) {
 
+		// included edges in path map
 		HashMap<String, Boolean> includedInPath = new HashMap<>();
+		//distance map the return distance discoverd
 		HashMap<String, Distance> distanceMap = new HashMap<>();
 
 		InitlializeVariables(source, planetNodeNameMap,
@@ -37,6 +39,7 @@ public class DijsktraAlgoUtil {
 
 		for (int i = 0; i < vertex; i++) {
 
+			// minimum distance source node in each iteration
 			String mindistanceSrcNode = findMinDistanceNode(
 					distanceMap, includedInPath);
 			includedInPath.put(mindistanceSrcNode, true);
@@ -140,7 +143,7 @@ public class DijsktraAlgoUtil {
 
 	/**
 	 * Find minimum distance from hashMap
-	 * 
+	 * based on value
 	 * @param distanceMap
 	 * @return
 	 */

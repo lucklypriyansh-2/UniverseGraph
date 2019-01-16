@@ -9,6 +9,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import com.cryteck.universepath.model.Distance;
+import com.cryteck.universepath.model.PathResponse;
 import com.cryteck.universepath.service.DataLoaderService;
 
 public class CrytekBeanUtils {
@@ -52,16 +53,16 @@ public class CrytekBeanUtils {
 	 * @param dataLoaderService
 	 * @return
 	 */
-	public static List<Distance> createDistanceList(
+	public static PathResponse createDistanceList(
 			HashMap<String, Distance> distanceSourceMap,
 			String target, DataLoaderService dataLoaderService) {
 
 		String destination = target;
+		PathResponse pathResponse = new PathResponse();
 
 		List<Distance> distanceList = new ArrayList<>();
 		Distance distance;
-		while(destination != null && !destination.equals("none"))
-		{
+		while (destination != null && !destination.equals("none")) {
 			distance = distanceSourceMap.get(destination);
 			distance.setSourceAlias(
 					dataLoaderService.getNodeNameCachedData()
@@ -77,13 +78,15 @@ public class CrytekBeanUtils {
 							.get(destination).getPlanetName());
 			distance.setCurrentnode(destination);
 			distanceList.add(distance);
+			pathResponse.addTotal(distance.getDistance());
 			destination = distance.getSource();
-			System.out.println("des" + destination);
 		}
 
 		Collections.reverse(distanceList);
 
-		return distanceList;
+		pathResponse.setPathList(distanceList);
+		
+		return pathResponse;
 	}
 
 }

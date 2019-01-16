@@ -31,15 +31,18 @@
 			$scope.planets = response.data;
 		});
 
-		$scope.includeTraffic=false;
-		
+		$scope.includeTraffic = false;
+
 		$scope.getPath = function() {
 			var path = "/Graph/Path/" + $scope.sourceplanet.planetNode + "/"
-					+ $scope.destinationplanet.planetNode
-					+ "?includeTraffic="+$scope.includeTraffic;
-			console.log(path);
+					+ $scope.destinationplanet.planetNode + "?includeTraffic="
+					+ $scope.includeTraffic;
+
+			
 			$http.get(path).then(function(response) {
-				$scope.path = response.data;
+				$scope.$parent.total = 0;
+				$scope.path = response.data.pathList;
+				$scope.total=response.data.total;
 			});
 		}
 
@@ -78,7 +81,8 @@
 								<input type="checkbox" ng-model="includeTraffic"
 									ng-true-value="'true'" ng-false-value="'false'"
 									class="form-check-input"> <label
-									class="form-check-label" for="exampleCheck1">Include traffic details</label>
+									class="form-check-label" for="exampleCheck1">Include
+									traffic details</label>
 							</div>
 							<hr width="20px">
 							<button ng-click="getPath()" class="btn btn-lg btn-primary">findPath</button>
@@ -114,7 +118,7 @@
 									</td>
 									<th scope="col">Destination
 									</td>
-									<th scope="col">Distance
+									<th scope="col">Distance(in light year)
 									</td>
 								</tr>
 							</thead>
@@ -123,13 +127,16 @@
 								<tr ng-repeat="x in path">
 									<td>{{ x.sourceAlias }}</td>
 									<td>{{ x.currentNodeAlias }}</td>
-									<td>{{ x.distance }}</td>
-									<td ng-init="$parent.total = $parent.total + x.distance"></td>
+
+									<td>{{(x.pathexist?x.distance:'no path eexist') }}</td>
+
+						
+
 								</tr>
 								<tr>
-									<td><b>Total Distance</b></td>
+									<td><b>Total Distance(in light years)</b></td>
 									<td></td>
-									<td><b>{{ total }}</b></td>
+									<td><b>{{ total }} </b></td>
 								</tr>
 							</tbody>
 						</table>
@@ -152,9 +159,6 @@
 
 
 
-	<div
-		style="padding: 10px; border: 1px solid black; width: 30%; font-weight: bold"
-		ng-show='result'></div>
-	</div>
+
 </body>
 </html>

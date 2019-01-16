@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cryteck.universepath.model.Distance;
+import com.cryteck.universepath.model.PathResponse;
 import com.cryteck.universepath.model.Planet;
 import com.cryteck.universepath.model.Route;
 import com.cryteck.universepath.repository.PlanetRepository;
@@ -81,7 +82,7 @@ public class GraphService {
 	 * @param includeTraffic
 	 * @return
 	 */
-	public List<Distance> getShortestPath(String source,
+	public PathResponse getShortestPath(String source,
 			String destination, boolean includeTraffic) {
 
 		HashMap<String, Distance> distanceSourceMap = DijsktraAlgoUtil
@@ -90,11 +91,11 @@ public class GraphService {
 						dataLoaderService.getNodeNameCachedData(),
 						dataLoaderService.getRouteCachedData(),
 						includeTraffic);
-
-		List<Distance> distanceList = CrytekBeanUtils
+		PathResponse distanceResponse = CrytekBeanUtils
 				.createDistanceList(distanceSourceMap, destination,
 						dataLoaderService);
-		return distanceList;
+		
+		 return distanceResponse;
 
 	}
 

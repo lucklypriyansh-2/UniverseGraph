@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cryteck.universepath.model.Distance;
+import com.cryteck.universepath.model.PathResponse;
 import com.cryteck.universepath.model.Planet;
 import com.cryteck.universepath.model.Route;
 import com.cryteck.universepath.service.GraphService;
@@ -44,7 +45,7 @@ public class GraphController {
 
 	@GetMapping(value = { "/Path/{source}/{destination}" })
 	@ApiOperation(value = "gives minimum distance path from source to destination using dijskta", response = Distance.class)
-	public List<Distance> getPath(
+	public PathResponse getPath(
 			@ApiParam("source node name  ") @PathVariable("source") String source,
 			@ApiParam("destination node name  ") @PathVariable("destination") String destination,
 			@RequestParam(value = "includeTraffic", defaultValue = "false") boolean includeTraffic) {

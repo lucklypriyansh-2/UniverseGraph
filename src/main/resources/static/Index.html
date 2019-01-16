@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AngularJs ng-change Event with Select / Dropdownlist
+	Example</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<link rel="stylesheet"
+	href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+	integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+	crossorigin="anonymous">
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+	integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+	crossorigin="anonymous"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+	integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+	crossorigin="anonymous"></script>
+<script type="text/javascript">
+	var app = angular.module('ngchangeApp', []);
+	app.controller('ngchangeCtrl', function($scope, $http) {
+
+		$http.get("/Graph/Planet").then(function(response) {
+			$scope.planets = response.data;
+		});
+
+		$scope.includeTraffic=false;
+		
+		$scope.getPath = function() {
+			var path = "/Graph/Path/" + $scope.sourceplanet.planetNode + "/"
+					+ $scope.destinationplanet.planetNode
+					+ "?includeTraffic="+$scope.includeTraffic;
+			console.log(path);
+			$http.get(path).then(function(response) {
+				$scope.path = response.data;
+			});
+		}
+
+	});
+</script>
+</head>
+<body>
+	<div ng-app="ngchangeApp" ng-controller="ngchangeCtrl">
+
+		<div>
+			<div class="row" style="height: 100px"></div>
+			<div class="row">
+
+				<div class="col-md-2"></div>
+				<div class="col-md-8" align="center">
+					<div class="card">
+
+						<div class="card-body">
+							<h5 class="card-title">Path Finder</h5>
+							<select name="sourceplanet" class="custom-select"
+								ng-options="planet.planetName for planet in planets"
+								ng-model="sourceplanet">
+								<option value="">--Select Source Planet--</option>
+
+
+							</select>
+							<hr width="20px">
+							<select name="destinationplanet"
+								ng-options="planet.planetName for planet in planets"
+								ng-model="destinationplanet" class="custom-select">
+								<option value="">--Select Destination Planet--</option>
+							</select>
+							<hr width="20px">
+
+							<div class="form-check">
+								<input type="checkbox" ng-model="includeTraffic"
+									ng-true-value="'true'" ng-false-value="'false'"
+									class="form-check-input"> <label
+									class="form-check-label" for="exampleCheck1">Include traffic details</label>
+							</div>
+							<hr width="20px">
+							<button ng-click="getPath()" class="btn btn-lg btn-primary">findPath</button>
+
+						</div>
+
+
+
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-2"></div>
+
+		</div>
+
+
+
+		<div class="row" style="height: 50px"></div>
+		<div class="row">
+
+			<div class="col-md-2"></div>
+			<div class="col-md-8" align="center">
+				<div class="card">
+
+					<div class="card-body">
+						<h5 class="card-title">Path</h5>
+
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">Source
+									</td>
+									<th scope="col">Destination
+									</td>
+									<th scope="col">Distance
+									</td>
+								</tr>
+							</thead>
+							<tbody>
+
+								<tr ng-repeat="x in path">
+									<td>{{ x.sourceAlias }}</td>
+									<td>{{ x.currentNodeAlias }}</td>
+									<td>{{ x.distance }}</td>
+									<td ng-init="$parent.total = $parent.total + x.distance"></td>
+								</tr>
+								<tr>
+									<td><b>Total Distance</b></td>
+									<td></td>
+									<td><b>{{ total }}</b></td>
+								</tr>
+							</tbody>
+						</table>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-2"></div>
+		</div>
+
+
+	</div>
+
+
+
+
+
+
+
+
+
+	<div
+		style="padding: 10px; border: 1px solid black; width: 30%; font-weight: bold"
+		ng-show='result'></div>
+	</div>
+</body>
+</html>

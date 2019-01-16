@@ -46,7 +46,7 @@ public class DataLoaderService {
 		try {
 
 			Workbook xssfWorkbook = new XSSFWorkbook(
-					new FileInputStream(resource.getFile()));
+					resource.getInputStream());
 
 			List<Planet> planetList = CrytekBeanUtils.createBeanList(
 					xssfWorkbook.getSheetAt(0), Planet.class, true);
